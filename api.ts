@@ -1,27 +1,21 @@
-import {
-  QueryClient,
-  onlineManager,
-  useMutation,
-  useQuery,
-} from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import PocketBase, { ClientResponseError } from "pocketbase";
 import { REACT_APP_API_URL } from "@env";
 import { AddToDoInput, AddTodoWithIdInput, ToDo } from "./types/ToDo";
 import uuid from "react-native-uuid";
 import { AsyncAuthStore } from "./store/AsyncAuthStore";
+import { todoKeys } from "./queryKeys";
 
 const pb = new PocketBase(REACT_APP_API_URL, new AsyncAuthStore());
 
 export const useTodosQuery = () => {
   return useQuery({
-    queryKey: ["todos"],
+    queryKey: todoKeys.all,
     queryFn: async () => {
-      if (onlineManager.isOnline()) {
-        const todos = await pb.collection("todos").getFullList<ToDo>({
-          sort: "-created",
-        });
-        return todos;
-      }
+      const todos = await pb.collection("todos").getFullList<ToDo>({
+        sort: "-created",
+      });
+      return todos;
     },
   });
 };

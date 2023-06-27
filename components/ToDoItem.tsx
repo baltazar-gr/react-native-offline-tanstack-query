@@ -13,7 +13,7 @@ const ToDoItem = ({ toDo, onComplete }: ToDoItemProps) => {
   return (
     <View style={styles.container}>
       <Checkbox
-        disabled={toDo.completed}
+        disabled={true}
         value={toDo.completed}
         onValueChange={() => onComplete(toDo.id)}
       />

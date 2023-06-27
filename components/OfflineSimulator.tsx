@@ -1,10 +1,20 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+import NetInfo from "@react-native-community/netinfo";
 import { onlineManager } from "@tanstack/react-query";
 
 const OfflineSimulator = () => {
-  const isOnline = onlineManager.isOnline();
+  const [isOnline, setOnline] = useState(onlineManager.isOnline());
+
+  useEffect(() => {
+    return NetInfo.addEventListener((state) => {
+      const status =
+        state.isConnected != null &&
+        state.isConnected &&
+        Boolean(state.isInternetReachable);
+      setOnline(status);
+    });
+  }, []);
 
   return (
     <View style={styles.container}>

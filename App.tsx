@@ -2,27 +2,27 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
-import { QueryClient, onlineManager } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { addTodoMutationFn, completeTodoMutationFn } from "./api";
 import AddToDoScreen from "./screens/AddToDoScreen";
 import ToDoListScreen from "./screens/ToDoListScreen";
 import { RootStackParamList } from "./types/navigation";
-import { useEffect } from "react";
-import NetInfo from "@react-native-community/netinfo";
+import { useOnAppFocus, useOnlineManager } from "./hooks";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       cacheTime: 1000 * 60 * 60 * 24, // 24 hours
-      staleTime: 5000,
-      retry: 1,
+      staleTime: 2000,
+      retry: 0,
     },
   },
 });
 
 queryClient.setMutationDefaults(["addTodo"], {
-  mutationFn: ({ name, description }) => {
+  mutationFn: async ({ name, description }) => {
+    await queryClient.cancelQueries({ queryKey: ["todos"] });
     return addTodoMutationFn({ name, description });
   },
 });
@@ -41,14 +41,8 @@ const asyncStoragePersister = createAsyncStoragePersister({
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
-  useEffect(() => {
-    // Subscribe to network state updates
-    onlineManager.setEventListener((setOnline) => {
-      return NetInfo.addEventListener((state) => {
-        setOnline(!!state.isConnected);
-      });
-    });
-  }, []);
+  useOnAppFocus();
+  useOnlineManager();
 
   return (
     <PersistQueryClientProvider

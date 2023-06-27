@@ -1,1 +1,1 @@
-# react-native-offline-tanstack-query
+# Offline Example For React Native Example and Pocketbase
