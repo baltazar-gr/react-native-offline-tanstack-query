@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "~1.17.3",
+    "@react-native-community/netinfo": "9.3.5",
     "@react-navigation/native": "^6.1.5",
     "@react-navigation/native-stack": "^6.9.11",
     "@tanstack/query-async-storage-persister": "^4.24.10",
@@ -23,11 +24,10 @@
     "react-dom": "18.1.0",
     "react-native": "0.70.8",
     "react-native-dotenv": "^3.4.8",
-    "react-native-uuid": "^2.0.1",
-    "react-native-web": "~0.18.9",
-    "@react-native-community/netinfo": "9.3.5",
+    "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
-    "react-native-safe-area-context": "4.4.1"
+    "react-native-uuid": "^2.0.1",
+    "react-native-web": "~0.18.9"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

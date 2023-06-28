@@ -2,22 +2,30 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
-import { QueryClient } from "@tanstack/react-query";
+import { MutationCache, QueryClient } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { addTodoMutationFn, completeTodoMutationFn } from "./api";
 import AddToDoScreen from "./screens/AddToDoScreen";
 import ToDoListScreen from "./screens/ToDoListScreen";
 import { RootStackParamList } from "./types/navigation";
 import { useOnAppFocus, useOnlineManager } from "./hooks";
+import { ToastAndroid } from "react-native";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       cacheTime: 1000 * 60 * 60 * 24, // 24 hours
-      staleTime: 2000,
-      retry: 0,
     },
   },
+  // configure global cache callbacks to show toast notifications
+  mutationCache: new MutationCache({
+    onSuccess: (data) => {
+      ToastAndroid.show("Sucessfully added mutation", ToastAndroid.LONG);
+    },
+    onError: (error) => {
+      ToastAndroid.show("Error in mutation", ToastAndroid.LONG);
+    },
+  }),
 });
 
 queryClient.setMutationDefaults(["addTodo"], {

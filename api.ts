@@ -17,6 +17,7 @@ export const useTodosQuery = () => {
       });
       return todos;
     },
+    staleTime: 3000,
   });
 };
 
@@ -81,7 +82,8 @@ export const useAddTodo = (queryClient: QueryClient) => {
     mutationKey: ["addTodo"],
     mutationFn: addTodoMutationFn,
     onMutate: async (addedToDo) => {
-      await queryClient.cancelQueries({ queryKey: ["todos"] });
+      console.log("onMutate: ", addedToDo);
+      await queryClient.cancelQueries({ queryKey: todoKeys.all });
 
       const previousToDos = queryClient.getQueryData<ToDo[]>(["todos"]);
 
@@ -102,7 +104,6 @@ export const useAddTodo = (queryClient: QueryClient) => {
       return { previousToDos };
     },
     onError: (err: ClientResponseError, newTodo, context) => {
-      console.log("ha ocurrido un error");
       queryClient.setQueryData(["todos"], context?.previousToDos);
     },
     onSettled: () => {
