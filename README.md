@@ -1,4 +1,4 @@
-# Offline Example For React Native Example Using Tanstack Query
+# Offline Example For React Native Using Tanstack Query
 
 This is a [Expo.dev](https://expo.dev/) project.
 
