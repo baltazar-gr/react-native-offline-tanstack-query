@@ -1,4 +1,4 @@
-import { Button, Text, View } from "react-native";
+import { Button, View } from "react-native";
 import React, { useEffect, useState } from "react";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -14,7 +14,7 @@ const AddToDoScreen = ({ navigation }: AddToDoScreenProps) => {
   const [description, setDescription] = useState<string>("");
 
   const queryClient = useQueryClient();
-  const { mutate, data, context, ...others } = useAddTodo(queryClient);
+  const { mutate } = useAddTodo(queryClient);
 
   useEffect(() => {
     navigation.setOptions({
@@ -39,7 +39,6 @@ const AddToDoScreen = ({ navigation }: AddToDoScreenProps) => {
         description={description}
         onChangeDescription={setDescription}
       />
-      <Text>values of mutation: {JSON.stringify(others)}</Text>
     </View>
   );
 };

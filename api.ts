@@ -1,12 +1,11 @@
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import PocketBase, { ClientResponseError } from "pocketbase";
-import { REACT_APP_API_URL } from "@env";
 import { AddToDoInput, AddTodoWithIdInput, ToDo } from "./types/ToDo";
 import uuid from "react-native-uuid";
 import { AsyncAuthStore } from "./store/AsyncAuthStore";
 import { todoKeys } from "./queryKeys";
 
-const pb = new PocketBase(REACT_APP_API_URL, new AsyncAuthStore());
+const pb = new PocketBase("https://pb-todo-app.fly.dev/", new AsyncAuthStore());
 
 export const useTodosQuery = () => {
   return useQuery({
@@ -82,7 +81,6 @@ export const useAddTodo = (queryClient: QueryClient) => {
     mutationKey: ["addTodo"],
     mutationFn: addTodoMutationFn,
     onMutate: async (addedToDo) => {
-      console.log("onMutate: ", addedToDo);
       await queryClient.cancelQueries({ queryKey: todoKeys.all });
 
       const previousToDos = queryClient.getQueryData<ToDo[]>(["todos"]);
