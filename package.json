@@ -2,7 +2,7 @@
   "name": "react-native-offline-tanstack-query",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start --dev-client  --localhost",
+    "start": "expo start  --localhost",
     "start:clear": "expo start --clear",
     "android": "expo run:android",
     "ios": "expo run:ios",
